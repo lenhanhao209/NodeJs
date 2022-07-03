@@ -5,14 +5,14 @@ const app = express();
 
 app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
-app.set("views", path.join(__dirname, "resources/views"));
+app.set("views", path.join(__dirname, "/views"));
 
 app.get("/", (req, res) => {
   return res.render("home");
 });
 
-app.get("/message", (req, res) => {
-  return res.render();
+app.post("/message", (req, res) => {
+  return res.render("message");
 });
 
 app.listen(3000);
