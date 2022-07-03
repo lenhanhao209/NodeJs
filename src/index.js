@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const handlebars = require("express-handlebars");
 const app = express();
+const fs = require("fs");
 
 app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
@@ -12,7 +13,9 @@ app.get("/", (req, res) => {
 });
 
 app.post("/message", (req, res) => {
-  return res.render("message");
+  fs.writeFileSync("message.txt", "DUMMY");
+  res.redirect("/");
+  res.statusCode = 302;
 });
 
 app.listen(3000);
