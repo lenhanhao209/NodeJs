@@ -1,10 +1,9 @@
 const express = require("express");
+
 const router = express.Router();
 
-router.post("/product", (req, res, next) => {
-  const title = req.body;
-  res.redirect("/");
-  console.log(title);
+router.get("/", (req, res, next) => {
+  res.send("<h1>Hello from Express!</h1>");
 });
 
 module.exports = router;
