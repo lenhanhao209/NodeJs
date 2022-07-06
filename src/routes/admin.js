@@ -12,5 +12,5 @@ router.post("/product", (req, res, next) => {
   console.log(adminData.products);
   products.push({ title: req.body.title });
 });
-exports.routes = router;
 exports.products = products;
+exports.routes = router;
