@@ -6,7 +6,6 @@ const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 app.use(express.static(path.join(__dirname, "/public")));
-// app.engine("handlebars", handlebars.engine());
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "./views"));
