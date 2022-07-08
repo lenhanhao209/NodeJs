@@ -10,11 +10,12 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "/views"));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(shopRoutes);
 app.use("/admin", adminData.routes);
 
 app.use((req, res, next) => {
-  res.render("404", { pageTitle: "PAGE NOT FOUND!!!" });
+  res.status(404).render("404", { pageTitle: "PAGE NOT FOUND!!!" });
 });
 app.listen(3000);
