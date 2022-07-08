@@ -1,5 +1,5 @@
 <main>
-    {{#if hasProducts }}
+    {{#if prods }}
     <div class="grid">
         {{#each prods}}
         <article class="card product-item">
@@ -19,7 +19,7 @@
             </div>
         </article>
         {{/each}}
-    </div>
+    </div>  
     {{ else }}
     <h1>No Products Found!</h1>
     {{/if}}
