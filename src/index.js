@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const handlebars = require("express-handlebars");
+
 const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 app.use(express.static(path.join(__dirname, "/public")));
+console.log(__dirname);
 
-app.engine("handlebars", handlebars.engine());
-app.set("view engine", "handlebars");
+app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
 app.use(express.urlencoded({ extended: true }));
