@@ -10,31 +10,31 @@ module.exports = class Product {
     const p = path.join(
       path.dirname(process.mainModule.filename),
       "data",
-      "product.json"
+      "products.json"
     );
-    // fs.readFileSync(p, (err, fileContent) => {
-    //   let products = [];
-    //   if (!err) {
-    //     products = JSON.parse(fileContent);
-    //   }
-    //   products.push(this);
-    //   fs.writeFile(p, JSON.stringify(products), (err) => {
-    //     console.log(err);
-    //   });
-    // });
+    fs.readFileSync(p, (err, fileContent) => {
+      let products = [];
+      if (!err) {
+        products = JSON.parse(fileContent);
+      }
+      products.push(this);
+      fs.writeFile(p, JSON.stringify(products), (err) => {
+        console.log(err);
+      });
+    });
   }
 
   static fetchAll() {
     const p = path.join(
       path.dirname(process.mainModule.filename),
       "data",
-      "product.json"
+      "products.json"
     );
     fs.readFile(p, (err, fileContent) => {
       if (err) {
         return [];
       }
-      return JSON.parse(fileContent);
+      return JSON().parse(fileContent);
     });
   }
 };
