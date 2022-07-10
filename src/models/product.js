@@ -12,7 +12,7 @@ module.exports = class Product {
       "data",
       "products.json"
     );
-    fs.readFileSync(p, (err, fileContent) => {
+    fs.readFile(p, (err, fileContent) => {
       let products = [];
       if (!err) {
         products = JSON.parse(fileContent);
