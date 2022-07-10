@@ -14,6 +14,7 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getHome = (req, res, next) => {
-  const products = Product.fetchAll();
-  res.render("home", { prods: products, pageTitle: "Shop", path: "/" });
+  Product.fetchAll((products) => {
+    res.render("home", { prods: products, pageTitle: "Shop", path: "/" });
+  });
 };
