@@ -25,7 +25,7 @@ exports.getProduct = (req, res, next) => {
   //     });
   //   })
   //   .catch(err => console.log(err));
-  Product.findBy(prodId)
+  Product.findByPk(prodId)
     .then((product) => {
       res.render("shop/product-detail", {
         product: product,
@@ -120,9 +120,11 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
+  let fetchedCart;
   req.user
     .getCart()
     .then((cart) => {
+      fetchedCart = cart;
       return cart.getProducts();
     })
     .then((products) => {
@@ -137,6 +139,9 @@ exports.postOrder = (req, res, next) => {
           );
         })
         .catch((err) => console.log(err));
+    })
+    .then((result) => {
+      return fetchedCart.setProducts(null);
     })
     .then((result) => {
       res.redirect("/orders");
