@@ -10,8 +10,9 @@ class Product {
 
     save() {
         const db = getDb();
-        db.collecttion("products")
-            .insertMany(this)
+        return db
+            .collecttion("products")
+            .inserOne(this)
             .then((result) => {
                 console.log(result);
             })
