@@ -8,7 +8,7 @@ const mongoConnect = (callback) => {
             "mongodb+srv://lenhanhao209:ngocdung209@atlascluster.1pkaa.mongodb.net/?retryWrites=true&w=majority"
         )
         .then((client) => {
-            console.log("connected!!!");
+            console.log("Connected!");
             _db = client.db();
             callback();
         })
@@ -22,7 +22,7 @@ const getDb = () => {
     if (_db) {
         return _db;
     }
-    throw "No database found!!!";
+    throw "No database found!";
 };
 
 exports.mongoConnect = mongoConnect;
