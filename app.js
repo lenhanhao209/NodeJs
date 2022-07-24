@@ -15,13 +15,12 @@ app.set("views", "views");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
-const { log } = require("console");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
-  User.findByPk("62dc0ec96523628991de9929")
+  User.findById("62dc0ec96523628991de9929")
     .then((user) => {
       req.user = new User(
         user.name,
@@ -29,7 +28,7 @@ app.use((req, res, next) => {
         user.cart,
         user._id
       );
-      console.log(user);
+      console.log();
       next();
     })
     .catch((err) => console.log(err));

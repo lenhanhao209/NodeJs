@@ -21,10 +21,10 @@ exports.postAddProduct = (req, res, next) => {
     null,
     req.user._id
   );
-
   product
     .save()
     .then((result) => {
+      // console.log(result);
       console.log("Created Product");
       res.redirect("/admin/products");
     })
@@ -39,8 +39,8 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
-
+  Product.findById(prodId)
+    // Product.findById(prodId)
     .then((product) => {
       if (!product) {
         return res.redirect("/");
@@ -92,7 +92,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteByPk(prodId)
+  Product.deleteById(prodId)
     .then(() => {
       console.log("DESTROYED PRODUCT");
       res.redirect("/admin/products");

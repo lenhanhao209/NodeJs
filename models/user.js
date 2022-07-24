@@ -4,30 +4,41 @@ const getDb = require("../util/database").getDb;
 const ObjectId = mongodb.ObjectId;
 
 class User {
-  constructor(username, email, cart, id) {
-    this.name = username;
+  constructor(name, email, cart, id) {
+    this.name = name;
     this.email = email;
-    this.cart = cart;
+    this.cart = [];
     this._id = id;
   }
 
   save() {
     const db = getDb();
-    return db.collection("users").insertOne(this);
+    return db
+      .collection("users")
+      .insertOne(this)
+      .then()
+      .catch((err) => {
+        console.log(err);
+      });
   }
-
   addToCart(product) {
-    // const cartProduct = this.cart.items.findIndex((cp) => {
-    //   return cp._id === product._id;
-    // });
-    product.quantity = 1;
+    const cartProductIndex = this.cart.items.findIndex((item) => {
+      return item.productId.toString() === product._id.toString();
+    });
+    let newQuantity = 1;
+    const updatedCartItems = [...this.cart.items];
+    if (cartProductIndex >= 0) {
+      newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+      updatedCartItems[cartProductIndex].quantity = newQuantity;
+    } else {
+      updatedCartItems.push({
+        productId: new ObjectId(product._id),
+        // productId: product._id,
+        quantity: newQuantity,
+      });
+    }
     const updatedCart = {
-      item: [
-        {
-          productId: new ObjectId(product._id),
-          quantity: 1,
-        },
-      ],
+      items: updatedCartItems,
     };
     const db = getDb();
     return db
@@ -38,7 +49,7 @@ class User {
       );
   }
 
-  static findByPk(userId) {
+  static findById(userId) {
     const db = getDb();
     return db
       .collection("users")
