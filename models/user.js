@@ -22,18 +22,23 @@ class User {
     // });
     product.quantity = 1;
     const updatedCart = {
-      item: [{ ...product, quantity: 1 }],
+      item: [
+        {
+          productId: new ObjectId(product._id),
+          quantity: 1,
+        },
+      ],
     };
     const db = getDb();
     return db
       .collection("users")
-      .updatedOne(
+      .updateOne(
         { _id: new ObjectId(this._id) },
         { $set: { cart: updatedCart } }
       );
   }
 
-  static findById(userId) {
+  static findByPk(userId) {
     const db = getDb();
     return db
       .collection("users")
