@@ -7,7 +7,7 @@ class User {
   constructor(name, email, cart, id) {
     this.name = name;
     this.email = email;
-    this.cart = [];
+    this.cart = cart;
     this._id = id;
   }
 
@@ -22,9 +22,11 @@ class User {
       });
   }
   addToCart(product) {
+    // if (this.cart.items) {
     const cartProductIndex = this.cart.items.findIndex((item) => {
       return item.productId.toString() === product._id.toString();
     });
+    // }
     let newQuantity = 1;
     const updatedCartItems = [...this.cart.items];
     if (cartProductIndex >= 0) {
@@ -32,8 +34,8 @@ class User {
       updatedCartItems[cartProductIndex].quantity = newQuantity;
     } else {
       updatedCartItems.push({
-        productId: new ObjectId(product._id),
-        // productId: product._id,
+        // productId: new ObjectId(product._id),
+        productId: product._id,
         quantity: newQuantity,
       });
     }
@@ -55,7 +57,7 @@ class User {
       .collection("users")
       .findOne({ _id: new ObjectId(userId) })
       .then((user) => {
-        console.log(user);
+        // console.log(user);
         return user;
       })
       .catch((err) => {
