@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 const errorController = require("./controllers/error");
 
-// const User = require("./models/user");
+const User = require("./models/user");
 
 const app = express();
 
@@ -19,14 +19,14 @@ const shopRoutes = require("./routes/shop");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use((req, res, next) => {
-//   User.findById("62dd65e820523b251e8c2451")
-//     .then((user) => {
-//       req.user = new User(user.name, user.email, user.cart, user._id);
-//       next();
-//     })
-//     .catch((err) => console.log(err));
-// });
+app.use((req, res, next) => {
+  User.findById("62decf1b22d2869f28c1f787")
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => console.log(err));
+});
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
@@ -38,8 +38,20 @@ mongoose
     "mongodb+srv://lenhanhao209:ngocdung209@atlascluster.1pkaa.mongodb.net/shop?retryWrites=true&w=majority"
   )
   .then((result) => {
-    console.log("Connected to MongoDB");
+    User.findOne().then((user) => {
+      if (!user) {
+        const user = new User({
+          name: "lenhanhao",
+          email: "tranlenhanhao1990@gmail.com",
+          cart: {
+            items: [],
+          },
+        });
+        user.save();
+      }
+    });
     app.listen(3000);
+    console.log("Connected to MongoDB");
   })
   .catch((err) => {
     console.log(err);
