@@ -11,6 +11,7 @@
   "author": "Maximilian Schwarzmüller",
   "license": "ISC",
   "devDependencies": {
+    "mongoose": "^6.4.6",
     "nodemon": "^1.18.3"
   },
   "dependencies": {
