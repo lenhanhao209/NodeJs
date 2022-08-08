@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const errorController = require("./controllers/error");
-
 const User = require("./models/user");
 
 const app = express();
@@ -15,6 +14,7 @@ app.set("views", "views");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const authRoutes = require("./routes/auth");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -30,6 +30,7 @@ app.use((req, res, next) => {
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(errorController.get404);
 
@@ -42,7 +43,7 @@ mongoose
       if (!user) {
         const user = new User({
           name: "lenhanhao",
-          email: "tranlenhanhao1990@gmail.com",
+          email: "tranlenhanhao@gmail.com",
           cart: {
             items: [],
           },
@@ -51,7 +52,6 @@ mongoose
       }
     });
     app.listen(3000);
-    console.log("Connected to MongoDB");
   })
   .catch((err) => {
     console.log(err);
