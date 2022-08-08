@@ -32,6 +32,9 @@ app.engine(
         value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return value;
       },
+      compare2: function (value) {
+        return value != null;
+      },
     },
   })
 );

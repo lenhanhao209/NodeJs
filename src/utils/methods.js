@@ -4,7 +4,7 @@ class Methods {
   calculateTimeWorked = (staff) => {
     let totalHourWorked = 0;
     let totalMinWorked = 0;
-    let minustesCalculate;
+    let minustesWorked;
     let hoursWorked;
     const workTimeInDay = [];
     const WorkTimesLength = staff.workTimes.length;
@@ -15,25 +15,40 @@ class Methods {
       if (day === workTime.startTime.getDate()) {
         workTimeInDay.push(workTime);
       }
+
       return workTimeInDay;
     });
 
     workTimeInDay.forEach((workTime) => {
-      // calculate minutes work
-      if (workTime.endTime.getMinutes() >= workTime.startTime.getMinutes()) {
-        minustesCalculate =
-          workTime.endTime.getMinutes() - workTime.startTime.getMinutes();
-        hoursWorked =
-          workTime.endTime.getHours() - workTime.startTime.getHours();
+      // calculate hour and minutes work
+      if (workTime.endTime != null) {
+        if (workTime.endTime.getMinutes() >= workTime.startTime.getMinutes()) {
+          minustesWorked =
+            workTime.endTime.getMinutes() - workTime.startTime.getMinutes();
+          hoursWorked =
+            workTime.endTime.getHours() - workTime.startTime.getHours();
+        } else {
+          minustesWorked =
+            workTime.endTime.getMinutes() -
+            workTime.startTime.getMinutes() +
+            60;
+          hoursWorked =
+            workTime.endTime.getHours() - workTime.startTime.getHours() - 1;
+        }
       } else {
-        minustesCalculate =
-          workTime.endTime.getMinutes() - workTime.startTime.getMinutes() + 60;
-        hoursWorked =
-          workTime.endTime.getHours() - workTime.startTime.getHours() - 1;
+        totalHourWorked = 0;
+        totalMinWorked = 0;
       }
       //Total hour and minutes to work in a day
       totalHourWorked = totalHourWorked + hoursWorked;
-      totalMinWorked = totalMinWorked + minustesCalculate;
+      totalMinWorked = totalMinWorked + minustesWorked;
+      if (totalMinWorked > 60) {
+        totalHourWorked = totalHourWorked + 1;
+        totalMinWorked = totalMinWorked - 60;
+      } else {
+        totalHourWorked = totalHourWorked;
+        totalMinWorked = totalMinWorked;
+      }
       return { totalHourWorked, totalHourWorked };
     });
     return {
@@ -53,6 +68,13 @@ class Methods {
     } else {
       overHour = 0;
       overMin = 0;
+    }
+    if (overMin > 60) {
+      overHour = overHour + 1;
+      overMin = overMin - 60;
+    } else {
+      overHour = overHour;
+      overMin = overMin;
     }
     return { overHour, overMin };
   };
@@ -132,8 +154,10 @@ class Methods {
         shortMin = 60 - totalMinWorked;
       } else {
         shortHour = 0;
-        shortMin = 0;
+        shortHour = 0;
       }
+      overTime = overHour + overMin / 60;
+      shortTime = shortHour + shortHour / 60;
 
       staff.workTimes.forEach((workTime) => {
         if (

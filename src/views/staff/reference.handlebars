@@ -18,7 +18,11 @@
                        {{startTime}}
                     </td>
                     <td colspan="2">
-                        {{endTime}}
+                        {{#if (compare2 endTime)}}
+                           {{endTime}}
+                        {{else}}
+                            --
+                        {{/if}}
                     </td>
                     <td colspan="2">
                         {{workPlace}}
@@ -31,7 +35,11 @@
             
         </table>
         <p class="referenceStaff__article">
-            <b>Tổng số giờ làm lần này là:</b> {{timeWorked.totalHourWorked}}:{{timeWorked.totalMinWorked}}
+            <b>Tổng số giờ làm lần này là:</b> {{#if (compare2 endTime)}}
+                       --
+                        {{else}}
+                          {{timeWorked.totalHourWorked}}:{{timeWorked.totalMinWorked}}
+                        {{/if}}
         </p>
     </div>
     <div class="referenceStaff__wrapper">
