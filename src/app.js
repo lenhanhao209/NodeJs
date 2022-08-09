@@ -29,11 +29,14 @@ app.engine(
         return value < 1;
       },
       covert: function (value) {
-        value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         return value;
       },
       compare2: function (value) {
-        return value != null;
+        return value == false;
+      },
+      compare3: function (value) {
+        return value == null;
       },
     },
   })

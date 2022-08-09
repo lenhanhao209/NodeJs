@@ -18,13 +18,9 @@
                        {{startTime}}
                     </td>
                     <td colspan="2">
-                        {{#if (compare2 endTime)}}
-                           {{endTime}}
-                        {{else}}
-                            --
-                        {{/if}}
+                          {{endTime}}
                     </td>
-                    <td colspan="2">
+                    <td colspan="2">    
                         {{workPlace}}
                     </td>
                 {{/each}}
@@ -35,23 +31,25 @@
             
         </table>
         <p class="referenceStaff__article">
-            <b>Tổng số giờ làm lần này là:</b> {{#if (compare2 endTime)}}
-                       --
+            <b>Tổng số giờ làm lần này là:</b>  {{#if (compare2 isStarted)}}
+                       {{timeWorked.totalHourWorked}}:{{timeWorked.totalMinWorked}}
                         {{else}}
-                          {{timeWorked.totalHourWorked}}:{{timeWorked.totalMinWorked}}
+                          --
                         {{/if}}
         </p>
     </div>
     <div class="referenceStaff__wrapper">
         <h3 class="referenceStaff__title">Danh sách đăng ký nghỉ phép</h3>
         <table class="referenceStaff__table">
+            
             <tr>
                 <th>Ngày</th>
                 <th colspan="4">Số Giờ</th>
                 <th colspan="4">Lý do</th>
             </tr>
+            {{#each dayLeave}}
             <tr>
-                {{#each dayLeave}}
+                
                     <td>
                         {{day}}
                     </td>
@@ -61,8 +59,9 @@
                     <td colspan="4">
                         {{reason}}
                     </td>
-                {{/each}}    
+                
             </tr>
+            {{/each}}    
         </table>
     </div>
     <div class="referenceStaff__wrapper">
@@ -83,6 +82,7 @@
                 <option value="11">11</option>
                 <option value="12">12</option>
             </select>
+            <button type="submit" class="btn-custom-form">xem</button>
         </form>
         <p class="referenceStaff__salary">
             {{covert salary}}

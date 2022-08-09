@@ -49,7 +49,10 @@ class AttendanceController {
       pageTitle: "Attendance",
       isStarted: Methods.CheckIsStarted(req.staff),
       workPlace: req.staff.workTimes[req.staff.workTimes.length - 1].workPlace,
-      startTime: dateformat("hh:mm", req.staff.workTimes[req.staff.workTimes.length - 1].startTime),
+      startTime: dateformat(
+        "hh:mm",
+        req.staff.workTimes[req.staff.workTimes.length - 1].startTime
+      ),
       name: req.staff.name,
     });
   }

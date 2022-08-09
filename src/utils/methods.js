@@ -119,7 +119,11 @@ class Methods {
     return dayLeave;
   };
 
-  getSalary = (month, staff, { totalHourWorked, totalMinWorked }) => {
+  getSalary = (
+    month,
+    staff,
+    { timeWorkInDay, totalHourWorked, totalMinWorked }
+  ) => {
     const year = 2021;
     const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
     let overTime = 0;

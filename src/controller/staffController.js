@@ -33,11 +33,13 @@ class StaffController {
   getReference(req, res) {
     const timeWorked = Methods.calculateTimeWorked(req.staff);
     const workInDay = timeWorked.workTimeInDay.map((work) => {
+      const endTime = work.endTime ? dateformat("hh:mm", work.endTime) : "--";
       return {
         startDay: dateformat("dd/MM/yyyy", work.startTime),
         startTime: dateformat("hh:mm", work.startTime),
         workPlace: work.workPlace,
-        endTime: dateformat("hh:mm", work.endTime),
+        endTime: endTime,
+        working: work.working,
       };
     });
     const overTime = Methods.overTime(Methods.calculateTimeWorked(req.staff));
@@ -46,6 +48,7 @@ class StaffController {
       req.staff,
       Methods.calculateTimeWorked(req.staff)
     );
+    console.log(req.body);
     const dayLeave = req.staff.leaveInfoList.map((leaveInfoList) => {
       return {
         day: dateformat("dd/MM/yyyy", leaveInfoList.daysLeave),
@@ -53,6 +56,7 @@ class StaffController {
         reason: leaveInfoList.reason,
       };
     });
+
     res.render("staff/reference", {
       path: "/staff/reference",
       pageTitle: "Reference staff",
@@ -63,11 +67,13 @@ class StaffController {
       dayLeave, // arry of info annual leave
       salary,
       overTime,
+      isStarted: Methods.CheckIsStarted(req.staff),
     });
   }
 
   // POST /staff/reference
   postReference(req, res) {
+    console.log(req.body.month);
     const timeWorked = Methods.calculateTimeWorked(req.staff);
     const workInDay = timeWorked.workTimeInDay.map((work) => {
       return {
@@ -83,6 +89,7 @@ class StaffController {
       req.staff,
       Methods.calculateTimeWorked(req.staff)
     );
+
     const dayLeave = req.staff.leaveInfoList.map((leaveInfoList) => {
       return {
         day: dateformat("dd/MM/yyyy", leaveInfoList.daysLeave),
@@ -99,6 +106,7 @@ class StaffController {
       dayLeave, // arry of info annual leave
       salary,
       overTime,
+      isStarted: Methods.CheckIsStarted(req.staff),
     });
   }
 }
