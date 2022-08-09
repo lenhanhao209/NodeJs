@@ -68,7 +68,7 @@
         <h3 class="referenceStaff__title">Chi tiết Lương</h3>
         <form class="form-select-month" action="/staff/reference" method="POST">
             <label for="month">Tháng</label>
-            <select class="select-month" name="month" id="month">
+            <select onchange="this.form.submit()" class="select-month" name="month" id="month">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -82,8 +82,8 @@
                 <option value="11">11</option>
                 <option value="12">12</option>
             </select>
-            <button type="submit" class="btn-custom-form">xem</button>
         </form>
+        <span>Tháng đang xem là: tháng {{month}} </span>
         <p class="referenceStaff__salary">
             {{covert salary}}
         </p>

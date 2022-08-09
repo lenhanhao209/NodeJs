@@ -48,7 +48,6 @@ class StaffController {
       req.staff,
       Methods.calculateTimeWorked(req.staff)
     );
-    console.log(req.body);
     const dayLeave = req.staff.leaveInfoList.map((leaveInfoList) => {
       return {
         day: dateformat("dd/MM/yyyy", leaveInfoList.daysLeave),
@@ -73,7 +72,6 @@ class StaffController {
 
   // POST /staff/reference
   postReference(req, res) {
-    console.log(req.body.month);
     const timeWorked = Methods.calculateTimeWorked(req.staff);
     const workInDay = timeWorked.workTimeInDay.map((work) => {
       return {
@@ -83,13 +81,13 @@ class StaffController {
         endTime: dateformat("hh:mm", work.endTime),
       };
     });
+
     const overTime = Methods.overTime(Methods.calculateTimeWorked(req.staff));
     const salary = Methods.getSalary(
       req.body.month,
       req.staff,
       Methods.calculateTimeWorked(req.staff)
     );
-
     const dayLeave = req.staff.leaveInfoList.map((leaveInfoList) => {
       return {
         day: dateformat("dd/MM/yyyy", leaveInfoList.daysLeave),
@@ -97,6 +95,7 @@ class StaffController {
         reason: leaveInfoList.reason,
       };
     });
+    const month = req.body.month;
     res.render("staff/reference", {
       path: "/staff/reference",
       pageTitle: "Reference staff",
@@ -106,6 +105,7 @@ class StaffController {
       dayLeave, // arry of info annual leave
       salary,
       overTime,
+      month,
       isStarted: Methods.CheckIsStarted(req.staff),
     });
   }
