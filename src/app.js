@@ -29,7 +29,10 @@ app.engine(
         return value < 1;
       },
       covert: function (value) {
-        value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        value = value
+          .toFixed(0)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return value;
       },
       compare2: function (value) {

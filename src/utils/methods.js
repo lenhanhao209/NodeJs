@@ -58,26 +58,6 @@ class Methods {
     };
   };
 
-  overTime = ({ totalHourWorked, totalMinWorked }) => {
-    let overHour;
-    let overMin;
-    if (totalHourWorked >= 8) {
-      overHour = totalHourWorked - 8;
-      overMin = totalMinWorked;
-    } else {
-      overHour = 0;
-      overMin = 0;
-    }
-    if (overMin > 60) {
-      overHour = overHour + 1;
-      overMin = overMin - 60;
-    } else {
-      overHour = overHour;
-      overMin = overMin;
-    }
-    return { overHour, overMin };
-  };
-
   getLastStart = (staff) => {
     let lastWorked;
     const lastWorkedList = staff.workTimes.filter((workedTime) => {
@@ -100,63 +80,78 @@ class Methods {
     }
   };
 
-  getSalary = (month, staff) => {
-    const year = 2021;
-    const lastDayOfMonth = new Date(month);
-    console.log(lastDayOfMonth);
-    let overTime = 0;
-    let shortTime = 0;
+  overTime = ({ totalHourWorked, totalMinWorked }) => {
+    let overHour;
+    let overMin;
+    if (totalHourWorked >= 8) {
+      overHour = totalHourWorked - 8;
+      overMin = totalMinWorked;
+    } else {
+      overHour = 0;
+      overMin = 0;
+    }
+    if (overMin > 60) {
+      overHour = overHour + 1;
+      overMin = overMin - 60;
+    } else {
+      overHour = overHour;
+      overMin = overMin;
+    }
+    return { overHour, overMin };
+  };
+
+  getSalary = (
+    month,
+    staff,
+    { totalHourWorked, totalMinWorked },
+    { overHour, overMin }
+  ) => {
+    console.log("over", overHour);
+    console.log("short", overMin);
+    console.log("staff", staff);
+    console.log("totalHourWorked", totalHourWorked);
+    console.log("totalMinWorked", totalMinWorked);
+    console.log("overHour", overHour);
+    console.log("overMin", overMin);
+    let overTime;
+    let shortTime;
+    let timesLeave;
+    const year = 2022;
+    const lastDayOfMonth = new Date(year, month, 0).getDate();
     const listDayLeave = [];
 
     // get date leave
     staff.leaveInfoList.forEach((leaveInfo) => {
-      const listDay = leaveInfo.daysLeave.split("-");
-      const dayLeave = {};
+      const dateLeave = {};
+      dateLeave.dayLeave = leaveInfo.daysLeave.getDate();
+      dateLeave.timesLeave = leaveInfo.timesLeave;
+      dateLeave.monthLeave = leaveInfo.daysLeave.getMonth();
 
-      const dayStartLeave = new Date(listDay[0]);
-      const dayEndLeave = new Date(listDay[1]);
-      const timesLeave = leaveInfo.timesLeave;
-
-      dayLeave.dayStartLeave = dayStartLeave.getDate();
-      dayLeave.dayEndLeave = dayEndLeave.getDate();
-      dayLeave.monthLeave = dayStartLeave.getMonth();
-      dayLeave.time = timesLeave;
-      return listDayLeave.push(dayLeave);
+      listDayLeave.push(dateLeave);
     });
-
-    // get over time and short time;
+    // // get over time and short time;
     for (let i = 1; i <= lastDayOfMonth; i++) {
-      let timeWorkInDay = 0;
-      let timeAnnualLeave = 0;
-
-      overTime += timeWorkInDay - 8 < 0 ? 0 : timeWorkInDay - 8;
-      shortTime +=
-        8 - (timeWorkInDay + timeAnnualLeave) < 0
-          ? 0
-          : 8 - (timeWorkInDay + timeAnnualLeave);
-
+      let shortHour;
+      let shortMin;
       staff.workTimes.forEach((workTime) => {
         if (
           workTime.startTime.getDate() == i &&
           workTime.startTime.getMonth() + 1 == month
         ) {
           listDayLeave.forEach((day) => {
-            const hoursStart = workTime.startTime.getHours();
-            const hoursEnd = workTime.endTime.getHours();
-            const timeStart = hoursStart * 60 + workTime.startTime.getMinutes();
-            const timeEnd = hoursEnd * 60 + workTime.endTime.getMinutes();
-            // plus time leave to timework
-            if (
-              day.dayStartLeave <= workTime.startTime.getDate() &&
-              day.dayEndLeave >= workTime.startTime.getDate() &&
-              day.monthLeave + 1 == month
-            ) {
-              timeAnnualLeave = day.timesLeave;
-            }
-            timeWorkInDay += (timeEnd - timeStart) / 60;
+            return (timesLeave = day.timesLeave);
           });
         }
+        if (totalHourWorked + timesLeave < 8) {
+          shortHour = 7 - (totalHourWorked + timesLeave);
+          shortMin = 60 - totalMinWorked;
+        } else {
+          shortHour = 0;
+          shortMin = 0;
+        }
       });
+      overTime = overHour + overMin / 60;
+      shortTime = shortHour + shortMin / 60;
     }
     return staff.salaryScale * 3000000 + (overTime - shortTime) * 200000;
   };

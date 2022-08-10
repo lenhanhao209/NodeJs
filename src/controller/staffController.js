@@ -46,7 +46,8 @@ class StaffController {
     const salary = Methods.getSalary(
       req.body.month,
       req.staff,
-      Methods.calculateTimeWorked(req.staff)
+      Methods.calculateTimeWorked(req.staff),
+      Methods.overTime(Methods.calculateTimeWorked(req.staff))
     );
     const dayLeave = req.staff.leaveInfoList.map((leaveInfoList) => {
       return {
@@ -55,7 +56,6 @@ class StaffController {
         reason: leaveInfoList.reason,
       };
     });
-
     res.render("staff/reference", {
       path: "/staff/reference",
       pageTitle: "Reference staff",
@@ -86,7 +86,8 @@ class StaffController {
     const salary = Methods.getSalary(
       req.body.month,
       req.staff,
-      Methods.calculateTimeWorked(req.staff)
+      Methods.calculateTimeWorked(req.staff),
+      Methods.overTime(Methods.calculateTimeWorked(req.staff))
     );
     const dayLeave = req.staff.leaveInfoList.map((leaveInfoList) => {
       return {
