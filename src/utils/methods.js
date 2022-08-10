@@ -106,13 +106,6 @@ class Methods {
     { totalHourWorked, totalMinWorked },
     { overHour, overMin }
   ) => {
-    console.log("over", overHour);
-    console.log("short", overMin);
-    console.log("staff", staff);
-    console.log("totalHourWorked", totalHourWorked);
-    console.log("totalMinWorked", totalMinWorked);
-    console.log("overHour", overHour);
-    console.log("overMin", overMin);
     let overTime;
     let shortTime;
     let timesLeave;
