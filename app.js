@@ -1,7 +1,6 @@
 const path = require("path");
 
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(
@@ -15,7 +14,7 @@ const errorController = require("./controllers/error");
 const User = require("./models/user");
 
 const MONGODB_URI =
-  "mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/shop";
+  "mongodb+srv://lenhanhao209:ngocdung209@atlascluster.1pkaa.mongodb.net/shop?retryWrites=true&w=majority";
 
 const app = express();
 const store = new MongoDBStore({
@@ -31,16 +30,17 @@ const fileStorage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(
       null,
-      new Date().toISOString() + "-" + file.originalname
+      new Date().toString().replace(/:/g, "-") +
+        "-" +
+        file.originalname
     );
   },
 });
-
 const fileFilter = (req, file, cb) => {
   if (
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/jpeg"
+    file.mimeType === "image/jpg" ||
+    file.mimeType === "image/png" ||
+    file.mimeType === "image/jpeg"
   ) {
     cb(null, true);
   } else {
@@ -55,12 +55,11 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 app.use(
-  multer({
-    storage: fileStorage,
-    fileFilter: fileFilter,
-  }).single("image")
+  multer({ storage: fileStorage }, fileFilter).single(
+    "image"
+  )
 );
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
@@ -81,7 +80,6 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  // throw new Error('Sync Dummy');
   if (!req.session.user) {
     return next();
   }
@@ -102,12 +100,10 @@ app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
-app.get("/500", errorController.get500);
-
+app.use("/500", errorController.get500);
 app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
-  // res.status(error.httpStatusCode).render(...);
   // res.redirect('/500');
   res.status(500).render("500", {
     pageTitle: "Error!",
@@ -117,7 +113,10 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then((result) => {
     app.listen(3000);
   })
