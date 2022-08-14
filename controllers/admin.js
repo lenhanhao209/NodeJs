@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const { validationResult } = require("express-validator/check");
+const {
+  validationResult,
+} = require("express-validator/check");
 const Product = require("../models/product");
 
 exports.getAddProduct = (req, res, next) => {
@@ -15,7 +17,7 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
+  const imageUrl = req.body.image;
   const price = req.body.price;
   const description = req.body.description;
   const errors = validationResult(req);
@@ -38,7 +40,9 @@ exports.postAddProduct = (req, res, next) => {
   }
 
   const product = new Product({
-    _id: mongoose.Types.ObjectId("62f32c271516ba33808cec39"),
+    _id: mongoose.Types.ObjectId(
+      "62f32c271516ba33808cec39"
+    ),
     title: title,
     price: price,
     description: description,
@@ -115,7 +119,10 @@ exports.postEditProduct = (req, res, next) => {
 
   Product.findById(prodId)
     .then((product) => {
-      if (product.userId.toString() !== req.user._id.toString()) {
+      if (
+        product.userId.toString() !==
+        req.user._id.toString()
+      ) {
         return res.redirect("/");
       }
       product.title = updatedTitle;
