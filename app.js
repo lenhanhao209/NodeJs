@@ -1,6 +1,7 @@
 const path = require("path");
 
 const express = require("express");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -26,13 +27,17 @@ const fileStorage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + "-" + file.originalname);
+    cb(
+      null,
+      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
+    );
   },
 });
+
 const fileFilter = (req, file, cb) => {
   if (
-    file.mimetype === "image/jpg" ||
     file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg"
   ) {
     cb(null, true);
@@ -48,7 +53,7 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
@@ -72,6 +77,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  // throw new Error('Sync Dummy');
   if (!req.session.user) {
     return next();
   }
@@ -92,10 +98,12 @@ app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
-app.use("/500", errorController.get500);
+app.get("/500", errorController.get500);
+
 app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
+  // res.status(error.httpStatusCode).render(...);
   // res.redirect('/500');
   res.status(500).render("500", {
     pageTitle: "Error!",
@@ -105,7 +113,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGODB_URI)
   .then((result) => {
     app.listen(3000);
   })
