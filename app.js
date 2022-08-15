@@ -3,9 +3,7 @@ const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(
-  session
-);
+const MongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 const flash = require("connect-flash");
 const multer = require("multer");
@@ -28,19 +26,14 @@ const fileStorage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    cb(
-      null,
-      new Date().toString().replace(/:/g, "-") +
-        "-" +
-        file.originalname
-    );
+    cb(null, new Date().toISOString() + "-" + file.originalname);
   },
 });
 const fileFilter = (req, file, cb) => {
   if (
-    file.mimeType === "image/jpg" ||
-    file.mimeType === "image/png" ||
-    file.mimeType === "image/jpeg"
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpeg"
   ) {
     cb(null, true);
   } else {
@@ -57,15 +50,10 @@ const authRoutes = require("./routes/auth");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(
-  multer({ storage: fileStorage }, fileFilter).single(
-    "image"
-  )
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
 app.use(express.static(path.join(__dirname, "public")));
-app.use(
-  "/images",
-  express.static(path.join(__dirname, "images"))
-);
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(
   session({
     secret: "my secret",
@@ -117,10 +105,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((result) => {
     app.listen(3000);
   })
