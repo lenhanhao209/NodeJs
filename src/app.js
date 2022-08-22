@@ -126,4 +126,6 @@ app.use((req, res, next) => {
 // Init router
 router(app);
 
-app.listen(3000);
+app.listen(process.execArgv.PORT || 3001, "0.0.0.0", () => {
+  console.log("Server is running");
+});
