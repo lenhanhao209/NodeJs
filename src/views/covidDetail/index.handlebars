@@ -10,6 +10,7 @@
 
             <label for="dateOfTemperature">Ngày Đo </label>
             <input id="dateOfTemperature" name="dateOfTemperature" type="date">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
             <button type="submit">Đăng Ký</button>
         </form>
 
@@ -25,7 +26,7 @@
             <input id="nameOfSecondVaccine" name="nameOfSecondVaccine" type="text">
             <label for="dateOfSecondVaccine">Ngày tiêm</label>
             <input id="dateOfSecondVaccine" name="dateOfSecondVaccine" type="date">
-            
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
             <button type="submit">Đăng Ký</button>
         </form>
     </div>
@@ -38,10 +39,11 @@
             <input id="recoverDate" name="recoverDate" type="date">
 
             <label for="isolationDate">Số ngày cách ly</label>
-            <input id="isolationDate" name="recoverDate" min=0 max=21 type="number">
+            <input id="isolationDate" name="isolationDate" min=0 max=21 type="number">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
             <button type="submit">Đăng Ký</button>
-
         </form>
     </div>
+    
 </div>
 

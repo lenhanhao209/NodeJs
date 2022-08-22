@@ -1,11 +1,13 @@
 const Methods = require("../utils/methods");
 const dateformat = require("date-format");
 const staff = require("../models/staff");
+const deleteFile = require("../utils/fileHelper");
 
 class StaffController {
   //  GET /staff/infoStaff
   getInfoStaff(req, res) {
     res.render("staff/infoStaff", {
+      isLoggedIn: req.session.isLoggedIn,
       id: req.staff._id.toString(),
       name: req.staff.name,
       dOB: dateformat("dd/MM/yyyy", req.staff.dOB),
@@ -22,10 +24,11 @@ class StaffController {
 
   // POST /staff/edit
   postEditStaff(req, res) {
-    req.staff.image = req.body.image;
+    deleteFile(req.staff.image);
+    req.staff.image = req.file.path;
     req.staff
       .save()
-      .then(() => res.redirect("/"))
+      .then(() => res.redirect("/staff/infoStaff"))
       .catch((error) => console.log(error));
   }
 
@@ -42,6 +45,7 @@ class StaffController {
         working: work.working,
       };
     });
+
     const overTime = Methods.overTime(Methods.calculateTimeWorked(req.staff));
     const salary = Methods.getSalary(
       req.body.month,
@@ -57,9 +61,9 @@ class StaffController {
       };
     });
     res.render("staff/reference", {
+      isLoggedIn: req.session.isLoggedIn,
       path: "/staff/reference",
       pageTitle: "Reference staff",
-      isStarted: null,
       workInDay, // Worked time in a day
       staff: req.staff, // staff
       timeWorked,
@@ -98,6 +102,7 @@ class StaffController {
     });
     const month = req.body.month;
     res.render("staff/reference", {
+      isLoggedIn: req.session.isLoggedIn,
       path: "/staff/reference",
       pageTitle: "Reference staff",
       isStarted: null,

@@ -5,7 +5,7 @@ const Staff = require("../models/staff");
 async function connect() {
   try {
     mongoose.connect(
-      "mongodb+srv://lenhanhao209:ngocdung209@atlascluster.1pkaa.mongodb.net/ASM1?retryWrites=true&w=majority"
+      "mongodb+srv://lenhanhao209:ngocdung209@atlascluster.1pkaa.mongodb.net/ASM?retryWrites=true&w=majority"
     );
     console.log("Connected to MongoDB");
   } catch (err) {
@@ -18,6 +18,9 @@ Staff.findOne()
     if (!staff) {
       const newStaff = new Staff({
         name: "Trần Lê Nhân Hảo ",
+        email: "tranlenhanhao1990@gmail.com",
+        password: "ngocdung209",
+        role: "staff",
         dOB: new Date(1990, 22, 02),
         salaryScale: 2,
         startDate: new Date(2022, 03, 09),

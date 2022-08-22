@@ -8,7 +8,8 @@ class Methods {
     let hoursWorked;
     const workTimeInDay = [];
     const WorkTimesLength = staff.workTimes.length;
-    let day = staff.workTimes[WorkTimesLength - 1].startTime.getDate();
+    let day =
+      staff.workTimes[WorkTimesLength - 1].startTime.getDate();
 
     // find list work time in a day
     staff.workTimes.forEach((workTime) => {
@@ -21,18 +22,25 @@ class Methods {
     workTimeInDay.forEach((workTime) => {
       // calculate hour and minutes work
       if (workTime.endTime != null) {
-        if (workTime.endTime.getMinutes() >= workTime.startTime.getMinutes()) {
+        if (
+          workTime.endTime.getMinutes() >=
+          workTime.startTime.getMinutes()
+        ) {
           minustesWorked =
-            workTime.endTime.getMinutes() - workTime.startTime.getMinutes();
+            workTime.endTime.getMinutes() -
+            workTime.startTime.getMinutes();
           hoursWorked =
-            workTime.endTime.getHours() - workTime.startTime.getHours();
+            workTime.endTime.getHours() -
+            workTime.startTime.getHours();
         } else {
           minustesWorked =
             workTime.endTime.getMinutes() -
             workTime.startTime.getMinutes() +
             60;
           hoursWorked =
-            workTime.endTime.getHours() - workTime.startTime.getHours() - 1;
+            workTime.endTime.getHours() -
+            workTime.startTime.getHours() -
+            1;
         }
       } else {
         totalHourWorked = 0;
@@ -146,7 +154,9 @@ class Methods {
       overTime = overHour + overMin / 60;
       shortTime = shortHour + shortMin / 60;
     }
-    return staff.salaryScale * 3000000 + (overTime - shortTime) * 200000;
+    return (
+      staff.salaryScale * 3000000 + (overTime - shortTime) * 200000
+    );
   };
 
   getLastWorkList = (staff) => {
